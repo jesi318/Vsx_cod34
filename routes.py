@@ -1,6 +1,6 @@
 
 from app import app, db
-from flask import render_template,redirect,url_for
+from flask import render_template,redirect,url_for,flash,get_flashed_messages
 import forms
 from models import Task
 from datetime import datetime
@@ -20,8 +20,9 @@ def about():
         t = Task(title = form.title.data , date = datetime.utcnow())
         db.session.add(t)
         db.session.commit()
+        flash('Task added to db')
         return redirect(url_for('index'))
-        return render_template('about.html', form=form, title = form.title.data)
+    return render_template('about.html', form=form, title = form.title.data)
 
 
     return render_template ('about.html', current_title="About page title", form=form)
