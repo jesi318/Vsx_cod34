@@ -1,12 +1,15 @@
 
-from app import app
-from flask import render_template
+from app import app, db
+from flask import render_template,redirect,url_for
 import forms
+from models import Task
+from datetime import datetime
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', current_title="New Index Title")
+    tasks = Task.query.all()
+    return render_template('index.html', tasks=tasks)
 
 @app.route('/')
 
@@ -14,7 +17,12 @@ def index():
 def about():
     form = forms.AddTaskForm()
     if form.validate_on_submit():
+        t = Task(title = form.title.data , date = datetime.utcnow())
+        db.session.add(t)
+        db.session.commit()
+        return redirect(url_for('index'))
         return render_template('about.html', form=form, title = form.title.data)
+
 
     return render_template ('about.html', current_title="About page title", form=form)
 

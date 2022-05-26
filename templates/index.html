@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
 {% block main %}
-<p>Index page block</p>
+<h1>Tasks</h1>
+<ul>
+    {% for task in tasks %}
+        <li>{{ task.title }}</li>
+    {% endfor %}
+</ul>
 {% endblock %}
