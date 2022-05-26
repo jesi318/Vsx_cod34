@@ -4,4 +4,4 @@ from wtforms.validators import DataRequired
 
 class AddTaskForm(FlaskForm):
     title = StringField('Title', validators =[DataRequired()])
-    submit = SubmitField('Submit')
+    submitb = SubmitField('Submit')

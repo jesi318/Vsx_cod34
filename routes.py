@@ -30,3 +30,22 @@ def about():
 @app.route('/links') 
 def link():
     return render_template('links.html')
+
+
+@app.route('/edit<int:task_id>', methods=["POST","GET"])
+def edit(task_id):
+    task = Task.query.get(task_id)
+    form = forms.AddTaskForm()
+
+    #if task exists
+    if task:
+        if form.validate_on_submit():
+            task.title = form.title.data
+            task.date = datetime.utcnow()
+            db.session.commit()
+            flash('Task has been successfully edited')
+            return redirect(url_for('index'))
+        form.title.data = task.title
+        return render_template('edit.html', form=form, task_id= task_id)
+
+    return redirect(url_for('index'))
